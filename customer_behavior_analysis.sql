@@ -10,7 +10,7 @@ group by gender
 select customer_id,Purchase_Amount 
 from customer
 where discount_applied = 'Yes' and
- Purchase_Amount >= (select avg(Purchase_Amount) from customer)
+ Purchase_Amount > (select avg(Purchase_Amount) from customer)
 
 -- Q3. Which are the top 5 products with the highest average review rating?
 select top 5  item_purchased,round(avg(review_rating),2)as avg_Product_rating
@@ -47,22 +47,6 @@ order by discount_rate desc
 
 --Q7. Segment customers into New, Returning, and Loyal based on their total 
 -- number of previous purchases, and show the count of each segment. 
-
-
-"""SELECT 
-    CASE 
-        WHEN previous_purchases = 1 THEN 'New'
-        WHEN previous_purchases BETWEEN 2 AND 5 THEN 'Returning'
-        ELSE 'Loyal'
-    END AS loyalty,
-    COUNT(*) AS customer_count
-FROM customer
-GROUP BY 
-    CASE 
-        WHEN previous_purchases = 1 THEN 'New'
-        WHEN previous_purchases BETWEEN 2 AND 5 THEN 'Returning'
-        ELSE 'Loyal'
-    END;"""
 
 with customer_type as(
 select customer_id,previous_purchases,
@@ -102,11 +86,6 @@ WHERE item_rank <= 3;
 
 
 --Q9. Are customers who are repeat buyers (more than 5 previous purchases) also likely to subscribe?
-select count(customer_id) as repeat_buyers,
-subscription_status
-from customer 
-where previous_purchases > 5
-GROUP BY subscription_status
 
 select subscription_status,
 count(case 
